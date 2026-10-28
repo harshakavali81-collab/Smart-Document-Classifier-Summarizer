@@ -36,3 +36,11 @@ jobs:
         working-directory: frontend
       - run: npm run build
         working-directory: frontend
+  docker-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose config -q
+      - run: docker build -t docsight-api:ci .
+      - run: docker build -t docsight-frontend:ci ./frontend

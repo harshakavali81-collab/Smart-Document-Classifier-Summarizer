@@ -122,3 +122,7 @@ MIT licensed · 2026.
 - **Operational startup and troubleshooting:** [Operations runbook](docs/OPERATIONS.md) and Windows setup helper `START_WINDOWS.ps1`.
 - **API smoke test after starting server:** `python -m scripts.smoke_api http://localhost:8000` (or port 8080 through Docker).
 - **Safety checks:** malicious/malformed PDF limits, UTF-8 rejection, filename sanitization and no raw document persistence are tested. Production-grade security remains outstanding.
+
+## Build verification
+
+The CI workflow now includes distinct Python/unit-evaluation, React build and **Docker image build** jobs. Its Docker job verifies the Compose configuration and builds both the backend and frontend containers. The Docker backend image also exposes a local HTTP health check. A successful CI build proves that these steps complete in the runner, **not** that a public production service is deployed.
