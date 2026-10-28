@@ -37,13 +37,14 @@ def test_large_text_rejected_early():
 
 def test_invalid_utf8_is_rejected():
     with pytest.raises(DocumentError, match="UTF-8"):
-        extract_pages("bad.txt", b"\\xff\\xfe\\xfa")
+        extract_pages("bad.txt", bytes([255, 254, 250]))
 
 
 def test_filename_path_and_controls_removed():
-    name = safe_filename("../secret\\r\\nfile.txt")
-    assert "/" not in name and "\\r" not in name and "\\n" not in name
-    assert safe_filename("docs/\\u202ereport.pdf").endswith(".pdf")
+    name = safe_filename("../secret" + chr(13) + chr(10) + "file.txt")
+    assert "/" not in name and chr(13) not in name and chr(10) not in name
+    assert chr(0x202e) not in safe_filename("docs/" + chr(0x202e) + "report.pdf")
+    assert safe_filename("C:\\\\fake\\\\folder\\\\report.pdf") == "report.pdf"
 
 
 def test_content_not_persisted_in_usage_db(tmp_path, monkeypatch):
