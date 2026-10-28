@@ -5,3 +5,5 @@
 **Not present:** authentication/authorization, per-tenant isolation, rate limits, malware scanning, PDF parser isolation, data encryption, retention automation, formal security review, production monitoring or public hosting. The SQLite volume retains operational metadata. Small traffic cohorts may be inferred from public category counts.
 
 **Requirements before production:** HTTPS, identity/permissions, per-user quotas, scanned-PDF sandboxing/malware scanning, PDF fuzz testing, encryption, retention/deletion policy, privacy notices, backups, secrets management, safe dependency pinning and independent model validation. Do not process private or sensitive real documents on an untrusted deployed copy.
+
+Additional limits: extraction is now bounded while iterating PDF pages to reduce large decompression workloads. Uploaded filenames are sanitized before returning them to browsers. This does **not** replace an independently isolated PDF parsing worker or malware scanning. Dependabot workflows are configured to propose dependency updates; such proposals must be reviewed and tested before merge.

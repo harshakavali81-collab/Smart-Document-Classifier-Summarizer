@@ -1,0 +1,24 @@
+name: Bug report
+description: Report a reproducible issue without sharing sensitive files.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Observed behavior
+      description: Describe the failure; do not attach confidential documents.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Use fabricated sample content if possible.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: Python 3.11 / Windows 11 / Chrome

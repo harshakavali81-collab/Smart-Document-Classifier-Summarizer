@@ -1,9 +1,8 @@
 """Document analysis orchestration with zero raw-document persistence."""
 from time import perf_counter
-from pathlib import PurePath
 from src.ingestion.pdf import extract_pages, DocumentError
 from src.preprocessing.text import normalize, count_words
-from src.security.validation import validate_upload, MAX_CHARS, MAX_PAGES
+from src.security.validation import validate_upload, safe_filename, MAX_CHARS, MAX_PAGES
 from src.classification.model import classify
 from src.summarization.extractive import summarize
 
@@ -25,7 +24,7 @@ def analyze(filename: str, payload: bytes) -> dict:
     pred = classify(text)
     evidence = summarize(cleaned)
     return {
-        "filename": PurePath(filename.replace("\\", "/")).name[:120],
+        "filename": safe_filename(filename),
         "category": pred["label"], "confidence": pred["confidence"],
         "alternatives": pred["alternatives"],
         "page_count": len(cleaned), "word_count": count_words(text),
