@@ -9,6 +9,13 @@ function Bars({items}){const highest=Math.max(...items.map(x=>x.count),1);return
 function App(){
  const [file,setFile]=useState(null),[result,setResult]=useState(null),[analytics,setAnalytics]=useState(null)
  const [error,setError]=useState(''),[loading,setLoading]=useState(false),[tab,setTab]=useState('analysis'),[drag,setDrag]=useState(false)
+ const [pdfPreviewUrl,setPdfPreviewUrl]=useState(null)
+ useEffect(()=>{
+  if(!file || !/\.pdf$/i.test(file.name)){setPdfPreviewUrl(null);return}
+  const url=URL.createObjectURL(file)
+  setPdfPreviewUrl(url)
+  return ()=>URL.revokeObjectURL(url)
+ },[file])
  async function loadMetrics(){try{const response=await fetch(API+'/api/v1/analytics');if(response.ok)setAnalytics(await response.json())}catch{}}
  useEffect(()=>{loadMetrics()},[])
  function pick(f){if(!f)return;setFile(f);setResult(null);setError('');setTab('analysis')}
@@ -47,8 +54,8 @@ function App(){
     {result?<section className="result" aria-live="polite"><div className="result-title"><div><div className="eyebrow">03 · ANALYSIS RESULT</div><h2>Evidence-backed output</h2><p>{result.filename}</p></div><button className="secondary" onClick={download}><Download size={16}/>Export JSON</button></div>
      <div className="metrics"><Metric icon={CheckCircle2} label="Category" value={result.category} detail="Synthetic-trained demo model"/><Metric icon={ChartColumn} label="Model score" value={(result.confidence*100).toFixed(1)+'%'} detail="Not calibrated accuracy"/><Metric icon={FileText} label="Pages" value={fmt(result.page_count)} detail={fmt(result.word_count)+' extracted words'}/><Metric icon={ScanText} label="Processing" value={fmt(result.latency_ms)+' ms'} detail="Backend analysis elapsed time"/></div>
      <div className="panel evidence"><div className="panel-head"><div><div className="eyebrow">SOURCE-TRACEABLE SUMMARY</div><h2>Highlights & citations</h2></div><span className="muted-tag">{result.summary.length} excerpts</span></div>
-      {result.summary.length ? result.summary.map((item,i)=><div className="excerpt" key={i}><span className="citation">PAGE {String(item.page).padStart(2,'0')}</span><p>{item.text}</p></div>):<p>No sentences met the summary selection criteria.</p>}
-      <div className="message note"><Info size={17}/>{result.note} Page citations identify the source page, not independent fact verification.</div>
+      {result.summary.length ? result.summary.map((item,i)=><div className="excerpt" key={i}>{pdfPreviewUrl?<a className="citation" href={pdfPreviewUrl+'#page='+item.page} target="_blank" rel="noopener noreferrer" title="Open the uploaded PDF at this page in your browser">PAGE {String(item.page).padStart(2,'0')} ↗</a>:<span className="citation">PAGE {String(item.page).padStart(2,'0')}</span>}<p>{item.text}</p></div>):<p>No sentences met the summary selection criteria.</p>}
+      <div className="message note"><Info size={17}/>{result.note} PDF page labels open the original locally uploaded PDF where supported by your browser. Citations trace the source, not the truth of its contents.</div>
      </div></section>:<div className="placeholder"><FileText size={20}/>Your classification and page-linked summary will appear here after analysis.</div>}
     </>:<><section className="page-heading"><div className="eyebrow">DEMO OPERATIONS / AGGREGATES</div><h1>Usage analytics</h1><p>Observability for a small prototype. Counts below reflect this server's real requests, not training or validation quality.</p></section>
     <div className="metrics analytics-metrics"><Metric icon={FileText} label="Analyses" value={fmt(analytics?.total_analyses)} detail="Analyzed uploads"/><Metric icon={Layers} label="Pages processed" value={fmt(analytics?.pages_processed)} detail="Total across uploads"/><Metric icon={ChartColumn} label="Mean duration" value={fmt(analytics?.average_latency_ms)+' ms'} detail="End-to-end backend latency"/></div>
