@@ -44,3 +44,17 @@ jobs:
       - run: docker compose config -q
       - run: docker build -t docsight-api:ci .
       - run: docker build -t docsight-frontend:ci ./frontend
+      - name: Start services and await readiness
+        run: docker compose up --build -d --wait --wait-timeout 120
+      - name: Smoke-test running Docker Compose stack
+        run: |
+          curl --fail --silent --show-error http://localhost:8080/api/v1/health | python3 -c 'import json,sys; assert json.load(sys.stdin)["status"] == "ok"'
+          curl --fail --silent --show-error -F file=@data/samples/example_report.txt http://localhost:8080/api/v1/analyze | python3 -c 'import json,sys; d=json.load(sys.stdin); assert d["page_count"] == 1 and d["summary"]; print("End-to-end PDF/TXT analysis smoke test passed")'
+          curl --fail --silent --show-error http://localhost:8080/api/v1/analytics | python3 -c 'import json,sys; assert json.load(sys.stdin)["total_analyses"] >= 1'
+          curl --fail --silent --show-error http://localhost:8080/ | grep -q 'Smart Document Classifier\|/src/main.jsx\|/assets/index'
+      - name: Print container diagnostic logs on failure
+        if: failure()
+        run: docker compose logs --no-color
+      - name: Clean up test containers and temporary database
+        if: always()
+        run: docker compose down -v
