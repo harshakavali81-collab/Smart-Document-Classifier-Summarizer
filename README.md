@@ -54,9 +54,10 @@ Open http://localhost:5173 . API docs: http://localhost:8000/docs
 curl -X POST http://localhost:8000/api/v1/analyze -F "file=@data/samples/example_report.txt"
 pytest -q
 python -m scripts.evaluate
+python -m scripts.make_eval_charts
 ~~~
 
-The evaluation outputs an actual synthetic held-out classification report and confusion matrix at reports/model_evaluation.json (ignored by Git); the CI job also uploads it as an artifact. Do not confuse synthetic test performance with real-world accuracy.
+The evaluation outputs a synthetic held-out classification report and confusion matrix at reports/model_evaluation.json. The chart generator creates reports/confusion_matrix.svg and reports/per_class_f1.svg from those **actual synthetic test results**. All three are ignored by Git and included in the downloadable CI evaluation artifact; none constitute an independent real-world benchmark. Do not confuse synthetic test performance with real-world accuracy.
 
 ## Architecture workflow
 

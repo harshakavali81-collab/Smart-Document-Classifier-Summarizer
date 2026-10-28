@@ -18,11 +18,12 @@ jobs:
       - run: python -m compileall -q backend src scripts
       - run: pytest -q
       - run: python -m scripts.evaluate
+      - run: python -m scripts.make_eval_charts
       - run: python -c "import pathlib,xml.etree.ElementTree as ET; [ET.parse(p) for p in pathlib.Path('assets').glob('*.svg')]; print('SVG assets parsed')"
       - uses: actions/upload-artifact@v4
         with:
           name: synthetic-model-evaluation
-          path: reports/model_evaluation.json
+          path: reports/
   frontend:
     runs-on: ubuntu-latest
     timeout-minutes: 15

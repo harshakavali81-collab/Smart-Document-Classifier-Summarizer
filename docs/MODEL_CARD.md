@@ -7,3 +7,5 @@
 **Risks:** OCR scans, multilingual PDFs, complex tables, short fragments, legal/medical implications, mixed-label files, domain changes and hallucinated interpretations by readers. Medical and legal category labels do not constitute advice.
 
 **Summarization:** selects verbatim source sentences from individual page text. This provides page traceability but cannot verify the truth or completeness of the source.
+
+The GitHub Actions workflow also exports an SVG confusion-matrix heat map and per-class F1 bar plot from the evaluation JSON. These graphs contain computed synthetic test metrics, not invented figures or real-world accuracy claims.
