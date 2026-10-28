@@ -53,7 +53,7 @@ Open http://localhost:5173 . API docs: http://localhost:8000/docs
 ~~~bash
 curl -X POST http://localhost:8000/api/v1/analyze -F "file=@data/samples/example_report.txt"
 pytest -q
-python scripts/evaluate.py
+python -m scripts.evaluate
 ~~~
 
 The evaluation outputs an actual synthetic held-out classification report and confusion matrix at reports/model_evaluation.json (ignored by Git); the CI job also uploads it as an artifact. Do not confuse synthetic test performance with real-world accuracy.

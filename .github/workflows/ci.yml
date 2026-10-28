@@ -17,7 +17,7 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m compileall -q backend src scripts
       - run: pytest -q
-      - run: python scripts/evaluate.py
+      - run: python -m scripts.evaluate
       - run: python -c "import pathlib,xml.etree.ElementTree as ET; [ET.parse(p) for p in pathlib.Path('assets').glob('*.svg')]; print('SVG assets parsed')"
       - uses: actions/upload-artifact@v4
         with:
