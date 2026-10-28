@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 Write-Host "DocSight AI - local development setup" -ForegroundColor Cyan
 if (!(Test-Path ".venv")) { python -m venv .venv }
 $py = Join-Path (Get-Location) ".venv\Scripts\python.exe"
-& $py -m pip install -r requirements.txt
+& $py -m pip install -r requirements-dev.txt
 Write-Host "Python environment ready. Install frontend packages next..." -ForegroundColor Green
 Push-Location frontend
 try { npm install --no-audit --no-fund } finally { Pop-Location }

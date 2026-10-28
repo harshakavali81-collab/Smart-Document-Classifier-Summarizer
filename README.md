@@ -34,7 +34,7 @@ Open http://localhost:8080
 python -m venv .venv
 # Windows: .venv\Scripts\activate
 # macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 uvicorn backend.app.main:app --reload --port 8000
 ~~~
 
@@ -126,3 +126,7 @@ MIT licensed · 2026.
 ## Build verification
 
 The CI workflow now includes distinct Python/unit-evaluation, React build and **Docker image build** jobs. Its Docker job verifies the Compose configuration and builds both the backend and frontend containers. The Docker backend image also exposes a local HTTP health check. A successful CI build proves that these steps complete in the runner, **not** that a public production service is deployed.
+
+## Test coverage and production dependencies
+
+Python CI installs requirements-dev.txt and generates a statement-coverage report with pytest-cov. Coverage XML is included in the downloadable CI artifact. Docker installs only runtime requirements.txt. Coverage measures executed source code, not model accuracy or security. See docs/RELEASE_CHECKLIST.md for verification and external approval gates.
