@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.*
+!.env.example
+runtime/
+reports/
+frontend/node_modules/
+frontend/dist/
+coverage.xml
+.coverage
+.DS_Store

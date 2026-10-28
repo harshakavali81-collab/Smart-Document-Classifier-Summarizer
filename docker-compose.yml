@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: .
+    restart: unless-stopped
+    environment:
+      ANALYTICS_DB: /app/runtime/usage.db
+      CORS_ORIGINS: http://localhost:5173
+    volumes:
+      - docsight-data:/app/runtime
+    expose:
+      - "8000"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+volumes:
+  docsight-data:
