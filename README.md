@@ -114,3 +114,11 @@ Smart-Document-Classifier-Summarizer/
 **Production gaps:** no authentication, no per-user isolation, no rate limiting, no malware scanner or PDF sandbox, no OCR for scanned files, no production grade monitoring or real-world model validation. Do not upload confidential content to an untrusted instance. GitHub Pages does not host the Python backend.
 
 MIT licensed · 2026.
+
+## Additional validation, privacy checks and demo
+
+- **Try it instantly:** [Open the standalone browser TXT demo](https://harshakavali81-collab.github.io/harshavardhan-portfolio/docsight-demo.html) in your browser. It uses local keyword heuristics, **not** the trained backend classifier. No server is contacted.
+- **Evaluate a separately labeled dataset:** [Independent validation guide](docs/REAL_WORLD_VALIDATION.md); run `python -m scripts.evaluate_external private_documents.csv`. This does not certify dataset independence; no individual document text is saved in the output.
+- **Operational startup and troubleshooting:** [Operations runbook](docs/OPERATIONS.md) and Windows setup helper `START_WINDOWS.ps1`.
+- **API smoke test after starting server:** `python -m scripts.smoke_api http://localhost:8000` (or port 8080 through Docker).
+- **Safety checks:** malicious/malformed PDF limits, UTF-8 rejection, filename sanitization and no raw document persistence are tested. Production-grade security remains outstanding.
