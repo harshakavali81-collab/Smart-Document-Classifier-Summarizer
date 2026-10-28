@@ -1,0 +1,13 @@
+Smart-Document-Classifier-Summarizer/
+├── assets/ (10 original SVG images)
+├── backend/app/{main.py,routes/,schemas/,services/,db/}
+├── src/{ingestion/,preprocessing/,classification/,summarization/,evaluation/,security/}
+├── data/samples/
+├── frontend/src/
+├── scripts/{train_classifier.py,evaluate.py}
+├── tests/
+├── docs/
+├── .github/workflows/ci.yml
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
