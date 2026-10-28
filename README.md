@@ -127,6 +127,10 @@ MIT licensed · 2026.
 
 The CI workflow now includes distinct Python/unit-evaluation, React build and **Docker image build** jobs. Its Docker job verifies the Compose configuration and builds both the backend and frontend containers. The Docker backend image also exposes a local HTTP health check. A successful CI build proves that these steps complete in the runner, **not** that a public production service is deployed.
 
+## Verified Python coverage
+
+A [GitHub Actions CI run](https://github.com/harshakavali81-collab/Smart-Document-Classifier-Summarizer/actions/runs/40659178488) recorded **34 passing tests and 100% statement coverage of the 215 measured statements in `backend/` and `src/`** on October 28, 2026. This does **not** measure browser, scripts, operational security, or real-world classifier accuracy. CI now enforces a **95% minimum** statement coverage threshold for those Python packages.
+
 ## Test coverage and production dependencies
 
 Python CI installs requirements-dev.txt and generates a statement-coverage report with pytest-cov. Coverage XML is included in the downloadable CI artifact. Docker installs only runtime requirements.txt. Coverage measures executed source code, not model accuracy or security. See docs/RELEASE_CHECKLIST.md for verification and external approval gates.

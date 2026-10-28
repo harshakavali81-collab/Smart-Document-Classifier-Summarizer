@@ -3,7 +3,7 @@
 ## Automated verification
 - [ ] GitHub main CI passes Python unit/integration tests, React build and Docker Compose end-to-end smoke checks.
 - [ ] Synthetic evaluation metrics and both reproducible SVG charts are included in the build artifact.
-- [ ] Python XML coverage report is generated, low-coverage modules identified and relevant tests added.
+- [ ] Python XML coverage report is generated and confirms the enforced 95% minimum for backend/ and src/ (the recorded 2026-10-28 run measured 100% across 215 statements).
 - [ ] Dependency updates are reviewed with tests, not blindly merged.
 
 ## Functional verification
