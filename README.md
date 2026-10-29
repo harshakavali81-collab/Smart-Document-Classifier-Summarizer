@@ -1,12 +1,20 @@
 # DocSight AI — Smart Document Classifier & Summarizer
 
-![Dashboard concept](assets/01-product-preview.svg)
-
 A full-stack, local-first document intelligence portfolio application: upload a PDF or text file, predict its category, see extractive highlights with source page numbers, and explore request analytics.
 
-**Transparency:** The classifier is trained on 72 authored synthetic samples across 6 categories, not validated real-world documents. Probabilities are not calibrated. The extractive summarizer returns sentences from the input, not LLM-generated prose. Illustrations are original schematics, not screenshots from a deployed production service.
+[Setup](#local-installation--setup-guide) · [Architecture](#architecture--system-design-diagram) · [Detailed guide](PROJECT_GUIDE.md) · [Repository standard](docs/REPOSITORY_STANDARD.md)
 
-## Features
+## Visuals
+
+![Dashboard concept](<assets/01-product-preview.svg>)
+
+Existing project visual; diagrams and illustrative graphics are not evidence of a deployed application.
+
+## Live Link / Demo
+
+Existing published preview link: [Open browser preview](https://harshakavali81-collab.github.io/harshavardhan-portfolio/docsight-demo.html). This update does not independently verify its availability or backend deployment.
+
+## Key Features
 
 | Module | Implementation |
 |---|---|
@@ -18,7 +26,22 @@ A full-stack, local-first document intelligence portfolio application: upload a 
 | Analytics | SQLite stores request timing, counts and categories — never uploaded content |
 | Engineering | Tests, synthetic evaluation, GitHub Actions, Docker Compose |
 
-## Get running
+## Tech Stack
+
+![Python](https://img.shields.io/badge/Python-334155?style=flat-square) ![FastAPI](https://img.shields.io/badge/FastAPI-334155?style=flat-square) ![scikit-learn](https://img.shields.io/badge/scikit--learn-334155?style=flat-square) ![React](https://img.shields.io/badge/React-334155?style=flat-square) ![Docker](https://img.shields.io/badge/Docker-334155?style=flat-square)
+
+Dependency versions and optional packages are defined in the repository manifests.
+
+## Architecture / System Design Diagram
+
+[Architecture documentation / diagram](<docs/ARCHITECTURE.md>)
+
+## Local Installation & Setup Guide
+
+```bash
+git clone https://github.com/harshakavali81-collab/Smart-Document-Classifier-Summarizer.git
+cd Smart-Document-Classifier-Summarizer
+```
 
 **Docker (requires Docker Compose):**
 
@@ -59,78 +82,42 @@ python -m scripts.make_eval_charts
 
 The evaluation outputs a synthetic held-out classification report and confusion matrix at reports/model_evaluation.json. The chart generator creates reports/confusion_matrix.svg and reports/per_class_f1.svg from those **actual synthetic test results**. All three are ignored by Git and included in the downloadable CI evaluation artifact; none constitute an independent real-world benchmark. Do not confuse synthetic test performance with real-world accuracy.
 
-## Architecture workflow
+## Challenges & Solutions
 
-~~~mermaid
-flowchart LR
-    A[PDF/TXT upload] --> B{Validate}
-    B -->|Valid| C[Page-indexed extraction]
-    B -->|Invalid| X[Error response]
-    C --> D[Normalized text]
-    D --> E[TF-IDF classifier]
-    D --> F[Extractive summarizer]
-    E --> G[Predicted category]
-    F --> H[Source excerpts + page numbers]
-    G --> I[FastAPI response]
-    H --> I
-    I --> J[React application]
-    I --> K[SQLite metadata]
-    K --> L[Analytics charts]
-~~~
+**Repository organization:** this project uses `src/`, `backend/`, `frontend/`. Keeping those paths stable avoids breaking imports, asset links and deployment commands while the documentation follows a shared format. Project-specific technical limitations and prior release evidence are retained in [Project guide](PROJECT_GUIDE.md).
 
-## Gallery: 10 original SVG visuals
+## Future Improvements
 
-All visuals below are conceptual schematics, not benchmark graphs or live app screenshots.
+- Capture a reproducible end-to-end demo with runtime versions and sample inputs.
+- Expand regression checks for invalid inputs and documented edge cases.
+- Record measured results, data provenance and deployment limitations alongside each release.
 
-| | |
-|---|---|
-| ![Workflow](assets/02-end-to-end-workflow.svg) | ![Architecture](assets/03-system-architecture.svg) |
-| ![Ingestion](assets/04-ingestion-pipeline.svg) | ![Classification](assets/05-classification-graph.svg) |
-| ![Summarization](assets/06-summarization-logic.svg) | ![Page references](assets/07-page-citation-map.svg) |
-| ![Usage charts](assets/08-analytics-graphs.svg) | ![Security](assets/09-security-safeguards.svg) |
-| ![CI deployment](assets/10-ci-deployment.svg) | ![Product concept](assets/01-product-preview.svg) |
+## Scope and supporting evidence
 
-## Source tree
+A full-stack, local-first document intelligence portfolio application: upload a PDF or text file, predict its category, see extractive highlights with source page numbers, and explore request analytics.
 
-~~~text
-Smart-Document-Classifier-Summarizer/
-├── .github/workflows/ci.yml
-├── assets/ (10 SVG graphics)
-├── backend/app/{main.py,routes/,schemas/,services/,db/}
-├── src/{ingestion/,preprocessing/,classification/,summarization/,evaluation/,security/}
-├── data/samples/
-├── frontend/src/
-├── tests/
-├── scripts/
-├── docs/
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-└── README.md
-~~~
+**Transparency:** The classifier is trained on 72 authored synthetic samples across 6 categories, not validated real-world documents. Probabilities are not calibrated. The extractive summarizer returns sentences from the input, not LLM-generated prose. Illustrations are original schematics, not screenshots from a deployed production service.
 
-[System architecture](docs/ARCHITECTURE.md) · [API](docs/API.md) · [Model card](docs/MODEL_CARD.md) · [Security](docs/SECURITY.md) · [Deployment](docs/DEPLOYMENT.md) · [Portfolio case study](docs/PORTFOLIO_CASE_STUDY.md)
+## Repository Structure
 
-**Production gaps:** no authentication, no per-user isolation, no rate limiting, no malware scanner or PDF sandbox, no OCR for scanned files, no production grade monitoring or real-world model validation. Do not upload confidential content to an untrusted instance. GitHub Pages does not host the Python backend.
+| Location | Purpose |
+| --- | --- |
+| `src/` | Source modules |
+| `backend/` | Backend services |
+| `frontend/` | Frontend interface |
+| `tests/` | Tests |
+| `docs/` | Documentation |
+| `data/` | Data and samples |
+| `assets/` | Visual assets |
+| `scripts/` | Automation scripts |
+| `.github/` | Issue forms, PR template and automated checks |
 
-MIT licensed · 2026.
+[Complete file inventory and workflow](docs/REPOSITORY_STANDARD.md). Runtime entry points retain their existing paths.
 
-## Additional validation, privacy checks and demo
+## Workflow & Tracking
 
-- **Try it instantly:** [Open the standalone browser TXT demo](https://harshakavali81-collab.github.io/harshavardhan-portfolio/docsight-demo.html) in your browser. It uses local keyword heuristics, **not** the trained backend classifier. No server is contacted.
-- **Evaluate a separately labeled dataset:** [Independent validation guide](docs/REAL_WORLD_VALIDATION.md); run `python -m scripts.evaluate_external private_documents.csv`. This does not certify dataset independence; no individual document text is saved in the output.
-- **Operational startup and troubleshooting:** [Operations runbook](docs/OPERATIONS.md) and Windows setup helper `START_WINDOWS.ps1`.
-- **API smoke test after starting server:** `python -m scripts.smoke_api http://localhost:8000` (or port 8080 through Docker).
-- **Safety checks:** malicious/malformed PDF limits, UTF-8 rejection, filename sanitization and no raw document persistence are tested. Production-grade security remains outstanding.
+Use the [bug and feature forms](https://github.com/harshakavali81-collab/Smart-Document-Classifier-Summarizer/issues/new/choose) to define work with acceptance criteria. Keep tasks in Todo → In progress → Review → Done, and link a pull request with `Closes #<number>`. See [the maintenance workflow](docs/REPOSITORY_STANDARD.md#workflow).
 
-## Build verification
+## License
 
-The CI workflow now includes distinct Python/unit-evaluation, React build and **Docker image build** jobs. Its Docker job verifies the Compose configuration and builds both the backend and frontend containers. The Docker backend image also exposes a local HTTP health check. A successful CI build proves that these steps complete in the runner, **not** that a public production service is deployed.
-
-## Verified Python coverage
-
-A [GitHub Actions CI run](https://github.com/harshakavali81-collab/Smart-Document-Classifier-Summarizer/actions/runs/40659178488) recorded **34 passing tests and 100% statement coverage of the 215 measured statements in `backend/` and `src/`** on October 28, 2026. This does **not** measure browser, scripts, operational security, or real-world classifier accuracy. CI now enforces a **95% minimum** statement coverage threshold for those Python packages.
-
-## Test coverage and production dependencies
-
-Python CI installs requirements-dev.txt and generates a statement-coverage report with pytest-cov. Coverage XML is included in the downloadable CI artifact. Docker installs only runtime requirements.txt. Coverage measures executed source code, not model accuracy or security. See docs/RELEASE_CHECKLIST.md for verification and external approval gates.
+See [LICENSE](LICENSE) for the existing terms.
